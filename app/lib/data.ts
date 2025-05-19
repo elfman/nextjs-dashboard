@@ -216,3 +216,43 @@ export async function fetchFilteredCustomers(query: string) {
     throw new Error('Failed to fetch customer table.');
   }
 }
+
+export async function fetchTotalPaidInvoices() {
+  try {
+    const data = await sql`SELECT SUM(amount) FROM invoices WHERE status = 'paid'`;
+    return formatCurrency(data[0].sum);
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total paid invoices.');
+  }
+}
+
+export async function fetchTotalPendingInvoices() {
+  try {
+    const data = await sql`SELECT SUM(amount) FROM invoices WHERE status = 'pending'`;
+    return formatCurrency(data[0].sum);
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total pending invoices.');
+  }
+}
+
+export async function fetchNumberOfInvoices() {
+  try {
+    const data = await sql`SELECT COUNT(*) FROM invoices`;
+    return Number(data[0].count);
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch number of invoices.');
+  }
+}
+
+export async function fetchNumberOfCustomers() {
+  try {
+    const data = await sql`SELECT COUNT(*) FROM customers`;
+    return Number(data[0].count);
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch number of customers.');
+  }
+}
